@@ -9,7 +9,8 @@ To run the project, run `go run .` from the root folder.
 ## Build Dependencies
 Reboot after doing this to ensure environment variables are configured properly.
 ### Linux
-TBD
+There are several dependencies which need to be installed additionally. To install them you can use `./run.sh` in the project root folder - this script takes care of the installation for you.
+
 ### OSX
 TBD
 ### Windows
