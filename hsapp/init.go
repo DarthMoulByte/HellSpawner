@@ -16,6 +16,8 @@ var argPath = kingpin.Arg("path", "Project path").String()
 func Init() {
 	// handle init of non-UI components
 	log.Println("Launching HellSpawner...")
+	// init app state
+	LoadAppState()
 	// init project state to an empty state
 	hsproj.SetDefaultActiveProject()
 	// init cryptographic tables

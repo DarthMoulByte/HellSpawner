@@ -3,10 +3,9 @@ package hsapp
 import (
 	"os"
 
-	"github.com/OpenDiablo2/HellSpawner/hsinterface"
-
 	"github.com/inkyblackness/imgui-go"
 
+	"github.com/OpenDiablo2/HellSpawner/hsinterface"
 	"github.com/OpenDiablo2/HellSpawner/hsproj"
 	"github.com/OpenDiablo2/HellSpawner/hsutil"
 )
@@ -34,22 +33,33 @@ func CreateMainWindow() *MainWindow {
 
 	startdir, _ := os.UserHomeDir()
 	result.openFolderDialog = CreateOpenFolderDialog("Select Project Folder", startdir, icons, func(folderPath string) {
-		hsproj.ActiveProject.PromptUnsavedChanges()
-		hsproj.ActiveProject.Close()
-
-		newproj, err := hsproj.LoadProjectStateFromFolder(folderPath)
-		if err != nil {
-			hsutil.PopupError(err)
-			return
-		}
-
-		hsproj.ActiveProject = newproj
+		loadProjectFolder(folderPath)
 		result.RefreshProjectLoaded()
 	})
 
 	result.projectTreeView = CreateProjectTreeView("ProjectTreeView", icons, result)
 
+	latestFolder := AppState.LatestFolder()
+	if latestFolder != "" {
+		loadProjectFolder(latestFolder)
+		result.RefreshProjectLoaded()
+	}
+
 	return result
+}
+
+func loadProjectFolder(folderPath string) {
+	AppState.SetLatestFolder(folderPath)
+	hsproj.ActiveProject.PromptUnsavedChanges()
+	hsproj.ActiveProject.Close()
+
+	newproj, err := hsproj.LoadProjectStateFromFolder(folderPath)
+	if err != nil {
+		hsutil.PopupError(err)
+		return
+	}
+
+	hsproj.ActiveProject = newproj
 }
 
 func (v MainWindow) DoClose() bool {
@@ -85,6 +95,16 @@ func (v *MainWindow) renderMainMenu() {
 			if imgui.MenuItem("Open Folder") {
 				v.openFolderDialog.Show()
 				showOpenFolderDialog = true
+			}
+			if len(AppState.RecentFolders) > 0 && imgui.BeginMenu("Recent") {
+				for _, folder := range AppState.RecentFolders {
+					if imgui.MenuItem(folder) {
+						loadProjectFolder(folder)
+						v.RefreshProjectLoaded()
+					}
+				}
+
+				imgui.EndMenu()
 			}
 			if imgui.MenuItem("Exit") {
 				v.doClose = true
