@@ -15,10 +15,12 @@ type FileTreeNode struct {
 	Children []*FileTreeNode
 }
 
+// GetMpqPath build MpqPath from node
 func (v *FileTreeNode) GetMpqPath() MpqPath {
-	pnames := strings.Split(v.FullPath, string("\\"))
-	fullminusbase := strings.Join(pnames[1:], "\\")
-	return MpqPath{pnames[0], fullminusbase}
+	// Split the mpq filename from internal path
+	// ex: d2data.mpq/data\global\items\flp2ax.dc6
+	pnames := strings.Split(v.FullPath, "/")
+	return MpqPath{pnames[0], pnames[1]}
 }
 
 func BuildTreeWalk(curnode *FileTreeNode, curpath []string, fullpath string, prevpaths string, id int) int {
