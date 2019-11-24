@@ -1,15 +1,17 @@
 package hsapp
 
 import (
+	"log"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/inkyblackness/imgui-go"
 
+	"github.com/OpenDiablo2/HellSpawner/hsapp/hseditors"
 	"github.com/OpenDiablo2/HellSpawner/hsinterface"
 	"github.com/OpenDiablo2/HellSpawner/hsproj"
 	"github.com/OpenDiablo2/HellSpawner/hsutil"
-	"github.com/OpenDiablo2/HellSpawner/hsapp/hseditors"
 )
 
 var WindowWidth float32
@@ -161,9 +163,12 @@ func (v *MainWindow) RefreshProjectLoaded() {
 func (v *MainWindow) OnFileSelected(filename string, mpqpath hsutil.MpqPath) {
 	// try to open an editor based on the file extension
 	var ed hsinterface.UIEditor
-	ed = nil
 
-	if filepath.Ext(mpqpath.FilePath) == ".txt" {
+	log.Printf("Loading file '%v' from MPQ '%v'", filename, mpqpath)
+
+	ext := strings.ToLower(filepath.Ext(mpqpath.FilePath))
+	switch ext {
+	case ".txt":
 		ed = hseditors.CreateTextEditor(filename, mpqpath)
 	}
 

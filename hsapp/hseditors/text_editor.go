@@ -8,7 +8,7 @@ import (
 )
 
 type TextEditor struct {
-	FileName string 
+	FileName string
 	MpqPath  hsutil.MpqPath
 
 	Text *string
@@ -22,7 +22,7 @@ func CreateTextEditor(filename string, mpqpath hsutil.MpqPath) *TextEditor {
 	ed := TextEditor{}
 	ed.FileName = filename
 	ed.MpqPath = mpqpath
-	ed.renderName = "TextEditor" + ed.MpqPath.MpqName + ":" + ed.MpqPath.FilePath + ":";
+	ed.renderName = "TextEditor" + ed.MpqPath.MpqName + ":" + ed.MpqPath.FilePath + ":"
 
 	// load the text itself
 	bytes, err := hsproj.ActiveProject.MpqList.LoadFile(mpqpath)
