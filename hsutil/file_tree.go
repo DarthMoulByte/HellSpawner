@@ -1,6 +1,7 @@
 package hsutil
 
 import (
+	"regexp"
 	"strings"
 )
 
@@ -19,7 +20,8 @@ type FileTreeNode struct {
 func (v *FileTreeNode) GetMpqPath() MpqPath {
 	// Split the mpq filename from internal path
 	// ex: d2data.mpq/data\global\items\flp2ax.dc6
-	pnames := strings.Split(v.FullPath, "/")
+	re := regexp.MustCompile(`[\\|/]`)
+	pnames := re.Split(v.FullPath, 2)
 	return MpqPath{pnames[0], pnames[1]}
 }
 
@@ -63,12 +65,12 @@ func BuildTreeWalk(curnode *FileTreeNode, curpath []string, fullpath string, pre
 	} else {
 		// insert the new node at a specific index
 		curnode.Children = append(curnode.Children, nil)
-		copy(curnode.Children[index + 1:], curnode.Children[index:])
+		copy(curnode.Children[index+1:], curnode.Children[index:])
 		curnode.Children[index] = newnode
 	}
 	newnode.Name = next
 	newnode.IsFile = isfile
-	newnode.Children = make([]*FileTreeNode, 0) 
+	newnode.Children = make([]*FileTreeNode, 0)
 	id++
 	newnode.Id = id
 	if newnode.IsFile { // if it's a file, stop
@@ -84,7 +86,7 @@ func BuildFileTreeFromFileList(paths []string) *FileTreeNode {
 	root := &FileTreeNode{}
 	root.Name = "root"
 	root.Children = make([]*FileTreeNode, 0)
-	
+
 	id := 0
 	for _, p := range paths {
 		pnames := strings.Split(p, string("\\"))
