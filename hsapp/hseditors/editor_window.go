@@ -24,7 +24,7 @@ func CreateEditorWindow(editor *hsinterface.UIEditor) *EditorWindow {
 }
 
 func (v *EditorWindow) Render() {
-	if imgui.BeginV((*v.Editor).Name()+v.renderName, &v.isOpen, imgui.WindowFlagsNoScrollbar|imgui.WindowFlagsNoScrollWithMouse) {
+	if imgui.BeginV((*v.Editor).Name()+v.renderName, &v.isOpen, 0) {
 		(*v.Editor).Render(imgui.Vec2{X: imgui.WindowWidth(), Y: imgui.WindowHeight()})
 	}
 	imgui.End()

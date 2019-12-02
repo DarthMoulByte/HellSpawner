@@ -17,7 +17,7 @@ var AboutDialogPopupName = "About Hellspawner##AboutDialog"
 
 func CreateAboutDialog() *AboutDialog {
 	result := &AboutDialog{}
-	tex, err := hsutil.NewTextureFromFile("d2logo.png", gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE)
+	tex, err := hsutil.NewTextureFromFile("assets/d2logo.png", gl.CLAMP_TO_EDGE, gl.CLAMP_TO_EDGE)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
