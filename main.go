@@ -12,18 +12,26 @@ import (
 
 func main() {
 	runtime.LockOSThread()
+
 	context := imgui.CreateContext(nil)
 	defer context.Destroy()
+
 	io := imgui.CurrentIO()
 
+	atlas := io.Fonts()
+	atlas.AddFontFromFileTTF("assets/Roboto-Regular.ttf", 16)
+
 	platform, err := NewGLFW(io, GLFWClientAPIOpenGL2)
+
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(-1)
 	}
+
 	defer platform.Dispose()
 
 	renderer, err := NewOpenGL2(io)
+
 	if err != nil {
 		_, _ = fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(-1)
