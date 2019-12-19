@@ -4,7 +4,7 @@
 # Author: liberodark
 # License: GNU GPLv3
 
-version="0.0.7"
+version="0.0.8"
 
 echo "HellSpawner Build Script $version"
 
